@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Survey</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h2>Questions about you</h2>
+    <!-- Form for collecting data -->
+    <form id="surveyForm" action="process.php" method="post">
+
+        <label>Name:</label><br>
+        <input type="text" name="name" required><br><br>
+
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <label>Your Age:</label><br>
+        <input type="number" name="age" min="1" max="100" required><br><br>
+
+        <label>Favorite subject</label><br>
+        <select name="Fav_subject">
+            <option value="Math">Math</option>
+            <option value="English">English</option>
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="PE">PE</option>
+            <option value="Computer Science">Computer science</option>
+            <option value="Biology">Biology</option>
+            <option value="Geography">Geography</option>
+        </select><br><br>
+
+        <label>Favorite Video Game</label><br>
+        <input type="text" name="video_game" required><br>
+
+        <label>Are you working out?</label><br>
+        <select name="Working_out">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select><br><br>
+
+        <label>What is your dream profession?</label><br>
+        <input type="text" name="dream_profession" required><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <!-- Div for displaying server response -->
+    <div id="response"></div>
+
+    <script>
+        $(document).ready(function () {
+            $("#surveyForm").submit(function (event) {
+                // Зупиняємо стандартну поведінку форми
+                event.preventDefault();
+
+                // Отримуємо дані форми
+                let formData = $(this).serialize();
+
+                // Відправляємо AJAX-запит
+                $.ajax({
+                    type: "POST",
+                    url: $(this).attr("action"), // URL обробника — process.php
+                    data: formData,
+                    success: function (response) {
+                        // Виводимо відповідь сервера у div#response
+                        $("#response").html(response);
+                    },
+                    error: function () {
+                        // Повідомлення у разі помилки
+                        $("#response").html("Виникла помилка під час відправки даних.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
